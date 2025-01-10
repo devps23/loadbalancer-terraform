@@ -11,7 +11,7 @@ nslookup "dns name" in load balancer
 * curl -v localhost:8080/health,to check status of health
 * to configure healthy checks in target groups
 * create a route53 records with type="CNAME",here CNAME means canonical names like blog.example.com -> example.com, type="A" means address record.
-
+nslookup mysql-dev.pdevops72.online
 --------------------------------------------------------------------------------------------------
 * to open application ports for appropriate subnets
 
