@@ -99,7 +99,7 @@ resource "aws_lb_target_group_attachment" "tg_attachment" {
   target_id        = aws_instance.instance.id
   port             = var.app_port
 }
-create a listener
+//create a listener
 resource "aws_lb_listener" "listener" {
   count             = var.lb_required ? 1 : 0
   load_balancer_arn = aws_lb.lb[0].arn
