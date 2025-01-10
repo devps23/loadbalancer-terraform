@@ -71,7 +71,7 @@ resource "aws_route53_record" "record" {
 }
 # create load balancer
 resource "aws_lb" "test" {
-  count              = var.lb_required ? true : false
+  count              = var.lb_required ? 1 : 0
   name               = "${var.env}-${var.component}-lb"
   internal           = var.lb_internal_facing == "public" ? false : true
   load_balancer_type = "application"
