@@ -37,7 +37,7 @@ module "mysql" {
   vault_token = var.vault_token
   vpc_id = module.vpc.vpc_id
   subnets_id = module.vpc.mysql_subnets
-  app_port = 3306
+
 }
 module "vpc"{
   source = "./modules/vpc"
