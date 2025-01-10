@@ -11,7 +11,7 @@ module "frontend" {
   lb_internal_facing = "public"
   lb_subnets = module.vpc.public_subnets
   lb_required = true
-
+  app_port = 80
 }
 module "backend" {
   depends_on = [module.mysql]
@@ -26,6 +26,7 @@ module "backend" {
   lb_internal_facing = "private"
   lb_subnets = module.vpc.backend_subnets
   lb_required = true
+  app_port = 8080
 }
 module "mysql" {
   source = "./modules/app"
@@ -36,6 +37,7 @@ module "mysql" {
   vault_token = var.vault_token
   vpc_id = module.vpc.vpc_id
   subnets_id = module.vpc.mysql_subnets
+  app_port = 3306
 }
 module "vpc"{
   source = "./modules/vpc"
