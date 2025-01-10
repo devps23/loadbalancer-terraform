@@ -12,7 +12,7 @@ module "frontend" {
   lb_subnets = module.vpc.public_subnets
   lb_required = true
   app_port = 80
-  bastion_nodes = var.bastion_nodes
+#   bastion_nodes = var.bastion_nodes
 #   server app port subnet depends from bottom to top
 #   server_app_port_cidr = var.public_subnets
 #   load balancer app port cidr from top to bottom
@@ -32,7 +32,7 @@ module "backend" {
   lb_subnets = module.vpc.backend_subnets
   lb_required = true
   app_port = 8080
-  bastion_nodes = var.bastion_nodes
+#   bastion_nodes = var.bastion_nodes
 #   server_app_port_cidr = concat(var.frontend_subnets,var.backend_subnets)
 #   load balancer port cidr connects with backend subnets
 #   lb_app_port_cidr = var.frontend_subnets
@@ -46,7 +46,7 @@ module "mysql" {
   vault_token = var.vault_token
   vpc_id = module.vpc.vpc_id
   subnets_id = module.vpc.mysql_subnets
-  bastion_nodes = var.bastion_nodes
+#   bastion_nodes = var.bastion_nodes
 #   server_app_port_cidr = var.backend_subnets
 }
 module "vpc"{
