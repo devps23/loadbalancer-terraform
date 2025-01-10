@@ -95,9 +95,20 @@ resource "aws_lb_target_group" "tg" {
 # target group attachment
 resource "aws_lb_target_group_attachment" "tg_attachment" {
   count              = var.lb_required ? 1 : 0
-  target_group_arn = aws_lb_target_group.test[0].arn
+  target_group_arn = aws_lb_target_group.tg[0].arn
   target_id        = aws_instance.instance.id
   port             = var.app_port
+}
+# create a listener
+resource "aws_lb_listener" "front_end" {
+  count             = var.lb_required ? 1 : 0
+  load_balancer_arn = aws_lb.lb.arn
+  port              = var.app_port
+  protocol          = "HTTP"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.tg[0].arn
+  }
 }
 
 
