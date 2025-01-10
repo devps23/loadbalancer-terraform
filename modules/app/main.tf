@@ -63,7 +63,7 @@ resource "aws_security_group" "sg" {
 #   }
 # }
 resource "aws_route53_record" "server_record" {
-  name      = "${var.component}-${var.env}"
+  name      = "${var.component}-${var.env}-server-record"
   type      = "A"
   zone_id   = var.zone_id
   ttl       = 5
@@ -71,7 +71,7 @@ resource "aws_route53_record" "server_record" {
 }
 resource "aws_route53_record" "lb_record" {
   count              = var.lb_required ? 1 : 0
-  name      = "${var.component}-${var.env}"
+  name      = "${var.component}-${var.env}-lb-record"
   type      = "CNAME"
   zone_id   = var.zone_id
   ttl       = 5
