@@ -70,7 +70,7 @@ resource "aws_route53_record" "record" {
   records = [aws_instance.instance.private_ip]
 }
 # create load balancer
-resource "aws_lb" "test" {
+resource "aws_lb" "lb" {
   count              = var.lb_required ? 1 : 0
   name               = "${var.env}-${var.component}-lb"
   internal           = var.lb_internal_facing == "public" ? false : true
@@ -82,7 +82,7 @@ resource "aws_lb" "test" {
   }
 }
 # create target group
-resource "aws_lb_target_group" "test" {
+resource "aws_lb_target_group" "tg" {
   count              = var.lb_required ? 1 : 0
   name               = "${var.env}-${var.component}-tg"
   port               = var.app_port
@@ -93,7 +93,7 @@ resource "aws_lb_target_group" "test" {
   }
 }
 # target group attachment
-resource "aws_lb_target_group_attachment" "test" {
+resource "aws_lb_target_group_attachment" "tg_attachment" {
   count              = var.lb_required ? 1 : 0
   target_group_arn = aws_lb_target_group.test[0].arn
   target_id        = aws_instance.instance.id
