@@ -11,3 +11,6 @@ variable "lb_internal_facing" {
 variable "lb_subnets" {
   default = null
 }
+variable "lb_required" {
+  default = null
+}
