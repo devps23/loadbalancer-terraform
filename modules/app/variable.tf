@@ -17,3 +17,8 @@ variable "lb_required" {
 variable "app_port" {
   default = null
 }
+# variable "bastion_nodes" {}
+# variable "server_app_port_cidr"{}
+# variable "lb_app_port_cidr" {
+#   default = []
+# }

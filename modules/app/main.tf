@@ -88,6 +88,15 @@ resource "aws_lb_target_group" "tg" {
   port               = var.app_port
   protocol           = "HTTP"
   vpc_id             = var.vpc_id
+  deregistration_delay = 50
+  health_check {
+    path = "/health"
+    port = var.app_port
+    healthy_threshold = 2
+    unhealthy_threshold = 2
+    interval = 5
+    timeout =  5
+  }
   tags = {
     Name = "${var.env}-${var.component}-tg"
   }
@@ -110,6 +119,54 @@ resource "aws_lb_listener" "listener" {
     target_group_arn = aws_lb_target_group.tg[0].arn
   }
 }
+# create a server security group
+# resource "aws_security_group" "server_sg" {
+#   name        = "${var.env}-vsg-${var.component}-serversg"
+#   description = "${var.env}-vsg-${var.component}-serversg"
+#   vpc_id      = var.vpc_id
+#   ingress {
+#     from_port   =  var.app_port
+#     to_port     =  var.app_port
+#     protocol    = "TCP"
+#     cidr_blocks = var.server_app_port_cidr
+#   }
+#   ingress {
+#     from_port   =  22
+#     to_port     =  22
+#     protocol    = "-TCP"
+#     cidr_blocks = var.bastion_nodes
+#   }
+#   egress {
+#     from_port   =  0
+#     to_port     =  0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+#   tags = {
+#     Name = "${var.env}-vsg-${var.component}-serversg"
+#   }
+# }
+# # create a load balancer security group
+# resource "aws_security_group" "loabbl_sg" {
+#   name        = "${var.env}-vsg-${var.component}-lbsg"
+#   description = "${var.env}-vsg-${var.component}-lbsg"
+#   vpc_id      = var.vpc_id
+#   ingress {
+#     from_port   =  0
+#     to_port     =  0
+#     protocol    = "-1"
+#     cidr_blocks = var.lb_app_port_cidr
+#   }
+#   egress {
+#     from_port   =  0
+#     to_port     =  0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+#   tags = {
+#     Name = "${var.env}-vsg-${var.component}-lbsg"
+#   }
+# }
 
 
 
