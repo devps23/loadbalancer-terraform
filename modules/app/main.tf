@@ -102,7 +102,7 @@ resource "aws_lb_target_group_attachment" "tg_attachment" {
 # create a listener
 resource "aws_lb_listener" "front_end" {
   count             = var.lb_required ? 1 : 0
-  load_balancer_arn = aws_lb.lb.arn
+  load_balancer_arn = aws_lb.lb[0].arn
   port              = var.app_port
   protocol          = "HTTP"
   default_action {
