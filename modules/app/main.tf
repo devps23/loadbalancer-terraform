@@ -62,12 +62,20 @@ resource "aws_security_group" "sg" {
 #     ]
 #   }
 # }
-resource "aws_route53_record" "record" {
+resource "aws_route53_record" "server_record" {
   name      = "${var.component}-${var.env}"
   type      = "A"
   zone_id   = var.zone_id
   ttl       = 5
   records = [aws_instance.instance.private_ip]
+}
+resource "aws_route53_record" "lb_record" {
+  count              = var.lb_required ? 1 : 0
+  name      = "${var.component}-${var.env}"
+  type      = "CNAME"
+  zone_id   = var.zone_id
+  ttl       = 5
+  records = [aws_lb.lb[0].dns_name]
 }
 # create load balancer
 resource "aws_lb" "lb" {
@@ -95,7 +103,7 @@ resource "aws_lb_target_group" "tg" {
     healthy_threshold = 2
     unhealthy_threshold = 2
     interval = 5
-    timeout =  5
+    timeout =  2
   }
   tags = {
     Name = "${var.env}-${var.component}-tg"
