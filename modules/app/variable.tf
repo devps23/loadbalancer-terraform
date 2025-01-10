@@ -12,5 +12,5 @@ variable "lb_subnets" {
   default = null
 }
 variable "lb_required" {
-  default = 0
+  default = false
 }
