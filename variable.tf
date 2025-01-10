@@ -11,5 +11,5 @@ variable "backend_subnets" {}
 variable "mysql_subnets" {}
 variable "availability_zone" {}
 variable "public_subnets"{}
-variable "bastion_nodes" {}
+# variable "bastion_nodes" {}
 
