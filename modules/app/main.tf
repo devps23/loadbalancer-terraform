@@ -45,29 +45,40 @@ resource "aws_security_group" "sg" {
   }
 }
 
-resource "null_resource" "null_instance" {
-  connection {
-    type     = "ssh"
-    user     = jsondecode(data.vault_generic_secret.my_secret.data_json).username
-    password = jsondecode(data.vault_generic_secret.my_secret.data_json).password
-    host     = aws_instance.instance.private_ip
-
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "sudo dnf install ansible -y",
-      "sudo pip3.11 install ansible hvac",
-      "ansible-pull -i localhost, -U https://github.com/devps23/expense-practice-ansible get-secrets.yml -e env=${var.env} -e component_name=${var.component} -e vault_token=${var.vault_token}",
-      "ansible-pull -i localhost, -U https://github.com/devps23/expense-practice-ansible expense.yml -e env=${var.env} -e component_name=${var.component} -e @~/secrets.json -e @~/app.json"
-    ]
-  }
-}
+# resource "null_resource" "null_instance" {
+#   connection {
+#     type     = "ssh"
+#     user     = jsondecode(data.vault_generic_secret.my_secret.data_json).username
+#     password = jsondecode(data.vault_generic_secret.my_secret.data_json).password
+#     host     = aws_instance.instance.private_ip
+#
+#   }
+#   provisioner "remote-exec" {
+#     inline = [
+#       "sudo dnf install ansible -y",
+#       "sudo pip3.11 install ansible hvac",
+#       "ansible-pull -i localhost, -U https://github.com/devps23/expense-practice-ansible get-secrets.yml -e env=${var.env} -e component_name=${var.component} -e vault_token=${var.vault_token}",
+#       "ansible-pull -i localhost, -U https://github.com/devps23/expense-practice-ansible expense.yml -e env=${var.env} -e component_name=${var.component} -e @~/secrets.json -e @~/app.json"
+#     ]
+#   }
+# }
 resource "aws_route53_record" "record" {
   name      = "${var.component}-${var.env}"
   type      = "A"
   zone_id   = var.zone_id
   ttl       = 5
   records = [aws_instance.instance.private_ip]
+}
+# create load balancer
+resource "aws_lb" "test" {
+  name               = "${var.env}-${var.component}-lb"
+  internal           = var.lb_internal_facing == "public" ? false : true
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.sg.id]
+  subnets            = var.lb_subnets
+   tags = {
+    Environment = "${var.env}-${var.component}-lb"
+  }
 }
 
 

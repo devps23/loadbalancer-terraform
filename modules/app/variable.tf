@@ -5,3 +5,7 @@ variable "component"{}
 variable "vault_token" {}
 variable "vpc_id"{}
 variable "subnets_id"{}
+variable "lb_internal_facing" {
+  default = null
+}
+variable "lb_subnets" {}
