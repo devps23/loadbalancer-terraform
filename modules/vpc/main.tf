@@ -135,19 +135,19 @@ resource "aws_route_table" "public_route" {
     Name = "public-rt-${count.index}"
   }
 }
-resource "aws_eip" "eip" {
-  count = length(var.public_subnets)
-  domain   = "vpc"
-}
-resource "aws_nat_gateway" "nat" {
-  count = length(var.public_subnets)
-  allocation_id = aws_eip.eip[count.index].id
-  subnet_id = aws_subnet.public_subnets[count.index].id
-
-  tags = {
-    Name = "nat-gw"
-  }
-}
+# resource "aws_eip" "eip" {
+#   count = length(var.public_subnets)
+#   domain   = "vpc"
+# }
+# resource "aws_nat_gateway" "nat" {
+#   count = length(var.public_subnets)
+#   allocation_id = aws_eip.eip[count.index].id
+#   subnet_id = aws_subnet.public_subnets[count.index].id
+#
+#   tags = {
+#     Name = "nat-gw"
+#   }
+# }
 resource "aws_route_table_association" "frontend_ass" {
   count = length(var.frontend_subnets)
   subnet_id      = aws_subnet.frontend_subnets[count.index].id
