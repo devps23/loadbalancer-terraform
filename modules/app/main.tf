@@ -64,14 +64,14 @@ resource "null_resource" "null_instance" {
 }
 resource "aws_route53_record" "server_record" {
   count      = var.lb_required ? 0 : 1
-  name      = "${var.component}-${var.env}-server-record"
+  name      = "${var.component}-${var.env}"
   type      = "A"
   zone_id   = var.zone_id
   ttl       = 5
   records = [aws_instance.instance.private_ip]
 }
 resource "aws_route53_record" "lb_record" {
-  count              = var.lb_required ? 1 : 0
+  count      = var.lb_required ? 1 : 0
   name      = "${var.component}-${var.env}-lb-record"
   type      = "CNAME"
   zone_id   = var.zone_id
