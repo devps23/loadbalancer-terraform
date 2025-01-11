@@ -28,3 +28,15 @@ so add lb_app_port ["0.0.0.0/0"] in frontend
 * backend subnets, in load balancer frontend communicates with backend
 
 
+redirect from http to https:
+============================
+http ----> not convert to https
+https -----> convert http
+https -----> https
+
+11/01/2025
+tmrw i need to check healthy
+add application port in security group
+redirect
+rds
+
